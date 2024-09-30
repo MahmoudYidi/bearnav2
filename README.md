@@ -1,5 +1,5 @@
 # Migration
-# Overview
+## Overview
 
 ROS2 Version of the code base _______
 ## Installation
@@ -20,7 +20,7 @@ If you want to run the system with gui, then:
 ```bash
 ros2 launch navigros2 navigros2_launch.py
 ```
-This simply just launch the ***navigros2_launch*** . Faster as no additional computations are done. However if you require the gui, may run slower, but provides more feedback using gui interface:
+This simply just launch the ***navigros2_launch*** . Faster as no additional computations are done. However if you require the gui, may run slower, but provides more feedback using gui interface, You need to also launch the GUI using:
 
 ```bash
 ros2 launch navigros2 navigros2-gui-launch.py
