@@ -34,7 +34,7 @@ To start mapping simply run:
 ```bash
 ./map_control.sh start_map name
 ```
-Where *name* is the the name of the map. After succesfully running this, you can simply drive the robot around to your desired goal. if you are done, run:
+Where '*name*' is the the name of the map. After succesfully running this, you can simply drive the robot around to your desired goal. if you are done, run:
 
 ```bash
 ./map_control.sh stop_map name
@@ -46,3 +46,5 @@ To repeat your map, simply run:
 ```bash
 ./map_control.sh repeat_map name
 ```
+
+Don't forget to map your topics in the launch file to your desired robot topics.
