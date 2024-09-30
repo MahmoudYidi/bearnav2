@@ -1,0 +1,3 @@
+alignment_node:
+  ros__parameters:
+    feature_type: 0  # Default to SIFT

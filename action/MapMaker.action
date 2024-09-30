@@ -1,0 +1,9 @@
+# Goal definition
+bool saveimgs4viz
+string map_name
+bool start
+---
+# Result definition
+bool success
+---
+# Feedback definition

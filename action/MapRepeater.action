@@ -1,0 +1,10 @@
+# Goal definition
+float64 start_pos
+float64 end_pos
+uint8 traversals
+string map_name
+---
+# Result definition
+bool success
+---
+# Feedback definition
