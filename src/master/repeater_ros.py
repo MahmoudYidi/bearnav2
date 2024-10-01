@@ -399,7 +399,7 @@ def main(args=None):
         if hasattr(node, 'shutdown'):
             node.shutdown()
         node.destroy_node()
-        rclpy.shutdown()
+        #rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
