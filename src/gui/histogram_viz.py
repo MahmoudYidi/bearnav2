@@ -58,7 +58,7 @@ def main(args=None):
     finally:
         histogrammer.unsubscribe()
         histogrammer.destroy_node()
-        #rclpy.shutdown()
+        rclpy.shutdown()
 
 if __name__ == "__main__":
     main()
