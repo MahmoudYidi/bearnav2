@@ -29,7 +29,7 @@ class Histogrammer(Node):
 
     def unsubscribe(self):
         if self.subscription:
-            self.get_logger().warn("Unsubscribing from histogram")
+            #self.get_logger().warn("Unsubscribing from histogram")
             self.destroy_subscription(self.subscription)
             self.subscription = None
 
