@@ -374,7 +374,7 @@ class ActionServerNode(Node):
         pass
 
     def shutdown(self):
-        self.get_logger().warn("Cancelling repeat")
+        #self.get_logger().warn("Cancelling repeat")
         self.is_repeating = False
         #self.bag_reader.reset()
         if self.bag_reader:
