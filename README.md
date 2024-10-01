@@ -28,7 +28,12 @@ ros2 launch navigros2 navigros2-gui-launch.py
 
 ### Mapping
 
-A bash file has been created to simplify the mapping process. 
+A bash file has been created to simplify the mapping process. Before that simply copy the .sh file to your workspace (do this once).
+```bash
+cd src/navigros2/
+cp ./map_control.sh ../../
+cd ../../
+```
 
 To start mapping simply run:
 ```bash
