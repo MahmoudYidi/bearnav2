@@ -67,10 +67,13 @@ def main(args=None):
     rclpy.init(args=args)
     alignment_node = AlignmentNode()
 
-    rclpy.spin(alignment_node)
-
-    alignment_node.destroy_node()
-    #rclpy.shutdown()
+    try:
+        rclpy.spin(alignment_node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        alignment_node.destroy_node()
+        #rclpy.shutdown()
 
 if __name__ == "__main__":
     main()
