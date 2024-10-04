@@ -53,7 +53,8 @@ def generate_launch_description():
             parameters=[{
                 'camera_topic': LaunchConfiguration('camera_topic'),
                 'cmd_vel_topic': LaunchConfiguration('cmd_vel_sub'),
-                'additional_record_topics': LaunchConfiguration('additional_record_topics')
+                'additional_record_topics': LaunchConfiguration('additional_record_topics'),
+                'position_topic': LaunchConfiguration('odom_topic')
             }],
             output='screen',
             namespace='navigros2'
@@ -67,7 +68,8 @@ def generate_launch_description():
             respawn=True,
             arguments=['-OO'],
             parameters=[{
-                'camera_topic': LaunchConfiguration('camera_topic')
+                'camera_topic': LaunchConfiguration('camera_topic'),
+                'position_topic': LaunchConfiguration('odom_topic')
             }],
             output='screen',
             namespace='navigros2'

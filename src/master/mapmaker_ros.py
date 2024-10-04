@@ -8,6 +8,7 @@ from rclpy.node import Node
 from rclpy.action import ActionServer
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
 from std_msgs.msg import Float64
 from cv_bridge import CvBridge
 from navigros2.action import MapMaker
@@ -32,11 +33,13 @@ class ActionServerNode(Node):
         self.bag_writer = None
         self.last_distance = None
         self.clock = Clock()
+        self.position_file = None
 
         # Parameters
         self.declare_parameter('additional_record_topics', '')
         self.declare_parameter('camera_topic', '')
         self.declare_parameter('cmd_vel_topic', '')
+        self.declare_parameter('position_topic', '')  #################################################
 
         self.additional_topics = self.get_parameter('additional_record_topics').get_parameter_value().string_value.split(" ")
         self.additional_topic_subscribers = []
@@ -66,6 +69,10 @@ class ActionServerNode(Node):
         self.get_logger().info("Starting mapmaker action server")
         self.action_server = ActionServer(self, MapMaker, '/navigros2/mapmaker', self.action_cb)
         self.get_logger().info("Server started, awaiting goal")
+
+        self.position_topic = self.get_parameter('position_topic').get_parameter_value().string_value
+        self.position_sub = self.create_subscription(Odometry, self.position_topic, self.position_cb, 10)  # Subscribe to the position topic
+
 
     #def get_message_type(self, topic):
         # Trial: to debug this later ##########################################################
@@ -118,6 +125,14 @@ class ActionServerNode(Node):
                     self.bag_writer.write(self.joy_topic, serialized_msg, current_time)
                 except Exception as e:
                     self.get_logger().error(f"Failed to write to bag: {e}")
+    
+    def position_cb(self, msg):
+        if self.is_mapping and self.position_file:  # Only log position when mapping
+            # Extract the position from the Odometry message
+            position = msg.pose.pose.position
+            self.position_file.write(f"Position: x={position.x}, y={position.y}, z={position.z}\n")
+            #self.get_logger().info(f"Position saved: x={position.x}, y={position.y}, z={position.z}")
+
 
     def action_cb(self, goal_handle):
         self.get_logger().info(f"Action callback triggered with goal: {goal_handle.request}")
@@ -151,6 +166,11 @@ class ActionServerNode(Node):
                 with open(os.path.join(goal.map_name, "params"), "w") as f:
                     f.write(f"stepSize: {self.map_step}\n")
                     f.write(f"odomTopic: {self.joy_topic}\n")
+
+                # Open the position log file to save positions
+                self.position_file = open(os.path.join(goal.map_name, "positions.txt"), "w")
+                self.get_logger().info("Position logging started")
+
             except Exception as e:
                 self.get_logger().warn(f"Unable to create map directory, ignoring: {e}")
                 result.success = False
@@ -181,6 +201,10 @@ class ActionServerNode(Node):
                 #self.bag_writer.reset()
                 #self.bag_writer.close()  
 
+            if self.position_file:
+                self.position_file.close()
+                self.get_logger().info("Position logging stopped")
+            
             result.success = True
             goal_handle.succeed()
             return result  

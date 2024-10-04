@@ -10,6 +10,7 @@ from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64
+from nav_msgs.msg import Odometry
 from cv_bridge import CvBridge
 from navigros2.action import MapRepeater
 from navigros2.srv import SetDist, SetClockGain
@@ -20,6 +21,11 @@ import numpy as np
 from rclpy.clock import Clock
 from rclpy.duration import Duration
 from rclpy.executors import MultiThreadedExecutor
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+from PIL import Image as PilImage
+import io
+import matplotlib.ticker as ticker
 
 class ActionServerNode(Node):
 
@@ -35,15 +41,33 @@ class ActionServerNode(Node):
         self.bag_reader = None
         self.is_repeating = False
         self.file_list = []
+        self.ground_truth_positions = []
+        self.real_time_positions = []
         self.end_position = None
         self.clock_gain = 1.0
         self.lock = threading.Lock()
         self.is_shutting_down = False
         self.clock = Clock()
+        self.img_t = np.ones((250, 250, 3), dtype=np.uint8) * 255  # Initialize once
 
         # services and action server set up
         self.get_logger().info("Waiting for services to become available...")
         self.distance_reset_srv = self.create_client(SetDist, 'set_dist')
+
+        # Load the ground truth positions from the file
+        
+        
+        # Real-time odometry subscription
+        self.declare_parameter('position_topic', '')
+        #self.odom_sub = self.create_subscription(Odometry, '/odom_topic', self.odom_cb, 10)
+
+        self.position_topic = self.get_parameter('position_topic').get_parameter_value().string_value
+        self.odom_sub = self.create_subscription(Odometry, self.position_topic, self.odom_cb, 1)  # Subscribe to the position topic
+        #self.timer = self.create_timer(0.1, self.odom_sub)
+
+        # Publisher for the combined image
+        self.imge_pub = self.create_publisher(Image, 'real_time_tracker', 1)
+
         
         self.set_clock_gain_srv = self.create_service(SetClockGain, 'set_clock_gain', self.set_clock_gain)
 
@@ -91,10 +115,7 @@ class ActionServerNode(Node):
             self.img = msg  # Update to the latest image
             self.al_1_pub.publish(msg)  # Always publish the latest image
             #self.get_logger().info("Received and published a new image")
-            
-        
-
-        
+    
 
     def get_closest_img(self, dist):
         if self.is_shutting_down:
@@ -234,6 +255,7 @@ class ActionServerNode(Node):
 
         self.img = None 
         self.parse_params(os.path.join(goal.map_name, "params"))
+        self.load_ground_truth(os.path.join(goal.map_name,'positions.txt'))
 
         # Get file list
         #with self.lock:
@@ -368,6 +390,88 @@ class ActionServerNode(Node):
                 self.saved_odom_topic = value
                 self.get_logger().info(f"Saved odometry topic: {self.saved_odom_topic}")
 
+
+    #### Map Tracking Stack #######
+    def load_ground_truth(self, file_path):
+        with open(file_path, 'r') as f:
+            for line in f:
+                line = line.replace('Position:', '').strip()
+                parts = line.split(',')
+            
+                x_value = float(parts[0].split('=')[1].strip())
+                y_value = float(parts[1].split('=')[1].strip())
+                
+                
+                self.ground_truth_positions.append((x_value, y_value))
+        
+        self.get_logger().info("Loaded ground truth positions")
+
+    def odom_cb(self, msg):
+        if not self.is_repeating:
+            return
+        x = msg.pose.pose.position.x
+        y = msg.pose.pose.position.y
+        self.real_time_positions.append((x, y))
+        self.plot_odom_with_matplotlib()
+
+    def plot_odom_with_matplotlib(self):
+        plt.figure(figsize=(2.5, 2.5)) 
+
+        
+        if self.ground_truth_positions:
+            ground_truth_x, ground_truth_y = zip(*self.ground_truth_positions)
+            plt.plot(ground_truth_x, ground_truth_y, 'bo-', label='Ground Truth', markersize=2)
+
+        if self.real_time_positions:
+            real_time_x, real_time_y = zip(*self.real_time_positions)
+            plt.plot(real_time_x, real_time_y, 'ro-', label='Real-Time', markersize=2)
+
+        
+        if self.real_time_positions:
+            last_x, last_y = self.real_time_positions[-1]
+            plt.scatter(last_x, last_y, color='green', marker='o', s=100, label='Robot')  
+
+        all_x = []
+        all_y = []
+
+        if self.ground_truth_positions:
+            all_x.extend([pos[0] for pos in self.ground_truth_positions])
+            all_y.extend([pos[1] for pos in self.ground_truth_positions])
+            
+        if self.real_time_positions:
+            all_x.extend([pos[0] for pos in self.real_time_positions])
+            all_y.extend([pos[1] for pos in self.real_time_positions])
+
+        if all_x and all_y:  
+            x_min = min(all_x) - 4  
+            x_max = max(all_x) + 4  
+            y_min = min(all_y) - 4  
+            y_max = max(all_y) + 4  
+
+            plt.xlim(x_min, x_max)
+            plt.ylim(y_min, y_max)
+
+        plt.gca().set_aspect('equal', adjustable='datalim')
+        plt.grid(True, linewidth=0.2)
+        ax = plt.gca()
+        ax.xaxis.set_major_locator(ticker.MaxNLocator(nbins=4))  
+        ax.yaxis.set_major_locator(ticker.MaxNLocator(nbins=4))  
+
+        # Convert plot to image to ROS Image message
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png', bbox_inches='tight') 
+        buf.seek(0)
+        img = PilImage.open(buf).convert("RGB")  
+        img_np = np.array(img)
+
+        if img_np.shape[2] == 4:
+            img_np = img_np[:, :, :3]  
+
+        ros_img_t = self.br.cv2_to_imgmsg(img_np, encoding="rgb8")
+        self.imge_pub.publish(ros_img_t)
+
+        plt.close()
+    
     def check_shutdown(self):
         #if self.action_server.is_preempt_requested():
          #   self.shutdown()
