@@ -1,4 +1,4 @@
-# Migration
+# Navigros2 (Bearnav-ROS2)
 ## Overview
 
 ROS2 Version of the code base _______
