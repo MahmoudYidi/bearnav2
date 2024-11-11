@@ -23,6 +23,7 @@ class Alignment:
         self.traditionalMethods = ["SIFT", "SURF", "KAZE", "AKAZE", "BRISK", "ORB"]
         if self.method == "SIAM":
             self.device = t.device("cuda") if t.cuda.is_available() else t.device("cpu")
+            #self.device =t.device("cpu")
             from backends.siam_model import Siamese, load_model, get_parametrized_model
             model = get_parametrized_model(False, 3, 256, 0, 3, self.device)
             file_path = os.path.dirname(os.path.abspath(__file__))

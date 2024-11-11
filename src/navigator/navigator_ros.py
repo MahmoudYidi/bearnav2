@@ -4,7 +4,8 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from navigros2.msg import Alignment
-from navigros2.srv import SetClockGain 
+from navigros2.srv import SetClockGain
+from rclpy.qos import qos_profile_sensor_data 
 
 from navigator import Navigator
 
@@ -18,9 +19,9 @@ class NavigatorNode(Node):
         # Publishers and Subscribers
         self.declare_parameter("cmd_vel_topic", "")
         cmd_vel_topic = self.get_parameter("cmd_vel_topic").get_parameter_value().string_value
-        self.pub = self.create_publisher(Twist, cmd_vel_topic, 0)
-        self.sub_vel = self.create_subscription(Twist, "map_vel", self.callback_vel, 10) #1000
-        self.sub_corr = self.create_subscription(Alignment, "correction_cmd", self.callback_corr, 10) #1000
+        self.pub = self.create_publisher(Twist, cmd_vel_topic, 1)
+        self.sub_vel = self.create_subscription(Twist, "map_vel", self.callback_vel, 1) #1000
+        self.sub_corr = self.create_subscription(Alignment, "correction_cmd", self.callback_corr, 1) #1000
 
         # Service Clients
         self.gain_srv = self.create_client(SetClockGain, 'set_clock_gain')

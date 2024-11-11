@@ -17,6 +17,7 @@ from rosbag2_py import SequentialWriter, StorageOptions, ConverterOptions
 from rclpy.serialization import serialize_message
 from rosbag2_py import TopicMetadata
 from rclpy.clock import Clock
+from rclpy.qos import qos_profile_sensor_data
 
 class ActionServerNode(Node):
 
@@ -59,19 +60,19 @@ class ActionServerNode(Node):
         self.get_logger().info("Starting...")
         self.distance_reset_srv.call_async(SetDist.Request(dist=0.0))
 
-        self.distance_sub = self.create_subscription(Float64, 'distance', self.distance_cb, 1)
+        self.distance_sub = self.create_subscription(Float64, 'distance', self.distance_cb, qos_profile=qos_profile_sensor_data)
         self.camera_topic = self.get_parameter('camera_topic').get_parameter_value().string_value
-        self.cam_sub = self.create_subscription(Image, self.camera_topic, self.image_cb, 1)
+        self.cam_sub = self.create_subscription(Image, self.camera_topic, self.image_cb, qos_profile=qos_profile_sensor_data)
         
         self.joy_topic = self.get_parameter('cmd_vel_topic').get_parameter_value().string_value
-        self.joy_sub = self.create_subscription(Twist, self.joy_topic, self.joy_cb, 1)
+        self.joy_sub = self.create_subscription(Twist, self.joy_topic, self.joy_cb, qos_profile=qos_profile_sensor_data)
         
         self.get_logger().info("Starting mapmaker action server")
         self.action_server = ActionServer(self, MapMaker, '/navigros2/mapmaker', self.action_cb)
         self.get_logger().info("Server started, awaiting goal")
 
         self.position_topic = self.get_parameter('position_topic').get_parameter_value().string_value
-        self.position_sub = self.create_subscription(Odometry, self.position_topic, self.position_cb, 10)  # Subscribe to the position topic
+        self.position_sub = self.create_subscription(Odometry, self.position_topic, self.position_cb, qos_profile=qos_profile_sensor_data)  # Subscribe to the position topic
 
 
     #def get_message_type(self, topic):
@@ -183,6 +184,10 @@ class ActionServerNode(Node):
             self.map_name = goal.map_name
             self.next_step = 0
             self.last_distance = None
+
+            # Reset the clock here
+            self.clock = Clock()  # Reset the clock
+            
             self.distance_reset_srv.call_async(SetDist.Request(dist=0.0))
             self.is_mapping = True
 

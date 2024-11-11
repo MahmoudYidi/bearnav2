@@ -26,6 +26,8 @@ import matplotlib.patches as patches
 from PIL import Image as PilImage
 import io
 import matplotlib.ticker as ticker
+import asyncio
+from rclpy.qos import qos_profile_sensor_data
 
 class ActionServerNode(Node):
 
@@ -62,7 +64,7 @@ class ActionServerNode(Node):
         #self.odom_sub = self.create_subscription(Odometry, '/odom_topic', self.odom_cb, 10)
 
         self.position_topic = self.get_parameter('position_topic').get_parameter_value().string_value
-        self.odom_sub = self.create_subscription(Odometry, self.position_topic, self.odom_cb, 1)  # Subscribe to the position topic
+        self.odom_sub = self.create_subscription(Odometry, self.position_topic, self.odom_cb, qos_profile=qos_profile_sensor_data)  # Subscribe to the position topic
         #self.timer = self.create_timer(0.1, self.odom_sub)
 
         # Publisher for the combined image
@@ -76,18 +78,18 @@ class ActionServerNode(Node):
 
         # Subscribers
         self.get_logger().info("Subscribing to distance and camera topics")
-        self.distance_sub = self.create_subscription(Float64, 'distance', self.distance_cb, 1)
+        self.distance_sub = self.create_subscription(Float64, 'distance', self.distance_cb, qos_profile=qos_profile_sensor_data)
         
         
         self.declare_parameter('camera_topic', '')
         self.camera_topic = self.get_parameter('camera_topic').get_parameter_value().string_value
-        self.cam_sub = self.create_subscription(Image, self.camera_topic, self.image_cb, 1)
+        self.cam_sub = self.create_subscription(Image, self.camera_topic, self.image_cb, qos_profile=qos_profile_sensor_data)
 
         # Publishers
         self.al_1_pub = self.create_publisher(Image, 'alignment/inputCurrent', 1)
         self.al_2_pub = self.create_publisher(Image, 'alignment/inputMap', 1)
-        self.al_pub = self.create_publisher(Alignment, 'correction_cmd', 0)
-        self.joy_pub = self.create_publisher(Twist, 'map_vel', 0)
+        self.al_pub = self.create_publisher(Alignment, 'correction_cmd', 1)
+        self.joy_pub = self.create_publisher(Twist, 'map_vel', 1)
 
         # Alignment module subscription
         self.al_sub = self.create_subscription(Alignment, 'alignment/output', self.align_cb, 10) #1000
@@ -99,7 +101,7 @@ class ActionServerNode(Node):
             MapRepeater,
             'repeater',
             self.action_cb,
-            callback_group=MutuallyExclusiveCallbackGroup()
+            #callback_group=MutuallyExclusiveCallbackGroup()
         )
         self.get_logger().info("Server started, awaiting goal")
 
@@ -166,7 +168,7 @@ class ActionServerNode(Node):
 
 
     def distance_cb(self, msg):
-        
+        #self.get_logger().info(f"Distance callback received data: {msg.data}")
         if not self.is_repeating:
                 return
             
@@ -186,6 +188,7 @@ class ActionServerNode(Node):
     
 
     def align_cb(self, msg):
+        #self.get_logger().info("Publishing to alignment/inputCurrent")
         self.al_pub.publish(msg)
 
 
@@ -235,7 +238,7 @@ class ActionServerNode(Node):
        # self.get_logger().info("New goal received")
         #threading.Thread(target=self.handle_action, args=(goal_handle,)).start()
 
-    def action_cb(self, goal_handle):
+    async def action_cb(self, goal_handle):
         goal = goal_handle.request
         self.get_logger().info("New goal received")
         #self.is_repeating = True
@@ -254,9 +257,12 @@ class ActionServerNode(Node):
             return result
 
         self.img = None 
+        self.clock = Clock()
         self.parse_params(os.path.join(goal.map_name, "params"))
         self.load_ground_truth(os.path.join(goal.map_name,'positions.txt'))
-
+        # Reset time-tracking variables
+        self.previous_message_time = None  
+        self.expected_message_time = None
         # Get file list
         #with self.lock:
         all_files = next(os.walk(goal.map_name))[2]
@@ -264,6 +270,7 @@ class ActionServerNode(Node):
         self.file_list = [filename.split('.')[0] for filename in all_files if ".jpg" in filename]
         self.get_logger().info(f"Found {len(self.file_list)} map files")
 
+        #self.clock = Clock()
         # Set distance to zero
         self.get_logger().info("Resetting distance")
         self.distance_reset_srv.call_async(SetDist.Request(dist=goal.start_pos))
@@ -308,6 +315,7 @@ class ActionServerNode(Node):
                 nanoseconds = int(sleep_time_nanoseconds % 1e9)  
                 
                 duration = Duration(seconds=seconds, nanoseconds=nanoseconds)
+                #await asyncio.sleep(sleep_time_nanoseconds / 1e9)
                 #clock.sleep_for(corrected_simulated_time_to_go)
                 self.clock.sleep_for(duration)
                 expected_message_time = now + sleep_time_nanoseconds
@@ -490,20 +498,28 @@ class ActionServerNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
+    
+    node = ActionServerNode()
     executor = MultiThreadedExecutor()
+    executor.add_node(node)
+
+    # Create a task for the main event loop
+    async def main_loop():
+        try:
+            while rclpy.ok():
+                executor.spin_once()
+                await asyncio.sleep(0.1)  # Adjust as needed
+        finally:
+            executor.shutdown()
+            node.destroy_node()
+
     try:
-        node = ActionServerNode()
-        
-        executor.add_node(node)
-        executor.spin()
+        # Run the asyncio event loop
+        asyncio.run(main_loop())
     except KeyboardInterrupt:
         pass
     finally:
-        executor.shutdown()
-        if hasattr(node, 'shutdown'):
-            node.shutdown()
-        node.destroy_node()
-        #rclpy.shutdown()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

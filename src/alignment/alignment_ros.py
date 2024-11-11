@@ -8,6 +8,7 @@ from navigros2.msg import Alignment, FloatList
 from rclpy.parameter import Parameter
 import alignment
 import numpy as np
+from rclpy.qos import qos_profile_sensor_data
 
 class AlignmentNode(Node):
     def __init__(self):
@@ -19,8 +20,8 @@ class AlignmentNode(Node):
         self.aligner = alignment.Alignment()
         self.aligner.method = self.align_feature_type
 
-        self.pub = self.create_publisher(Alignment, 'alignment/output', 0)
-        self.pub_hist = self.create_publisher(FloatList, 'histogram', 0)
+        self.pub = self.create_publisher(Alignment, 'alignment/output', 1)
+        self.pub_hist = self.create_publisher(FloatList, 'histogram', 1)
 
         self.create_subscription(Image, 'alignment/inputMap', self.callbackA, 1)
         self.create_subscription(Image, 'alignment/inputCurrent', self.callbackB, 1)

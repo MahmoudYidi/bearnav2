@@ -6,6 +6,7 @@ from std_msgs.msg import Float64
 from nav_msgs.msg import Odometry
 from navigros2.srv import SetDist  
 from distance import Distance  
+from rclpy.qos import qos_profile_sensor_data
 
 class DistanceNode(Node):
     def __init__(self):
@@ -24,11 +25,11 @@ class DistanceNode(Node):
         self.d = Distance(use_twist)
 
         # Create publisher
-        self.pub = self.create_publisher(Float64, 'distance', 0)
+        self.pub = self.create_publisher(Float64, 'distance', 1)
 
         # Create subscribers
-        self.create_subscription(Odometry, odom_topic, self.callback_odom, 1)
-        self.create_subscription(Twist, cmd_vel_topic, self.callback_twist, 1)
+        self.create_subscription(Odometry, odom_topic, self.callback_odom,qos_profile=qos_profile_sensor_data )
+        self.create_subscription(Twist, cmd_vel_topic, self.callback_twist, qos_profile=qos_profile_sensor_data)
 
         # Create service
         self.srv = self.create_service(SetDist, 'set_dist', self.handle_set_dist)

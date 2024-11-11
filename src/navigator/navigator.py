@@ -8,11 +8,13 @@ class Navigator:
         self.alignment = 0
         self.uncertainty = 0
         self.use_uncertainty = True
-        self.turn_gain = 0.0000000003  # turn 0.1 rad per each pixel of error
-        self.velocity_gain = 1  # 1 is the same speed as thought map, less is slower more is faster
+        #self.turn_gain = 0.0000000003  # turn 0.1 rad per each pixel of error
+        self.turn_gain = 0.00000000001
+        self.velocity_gain = 1  # 1 is the same speed as thought map, less is slower more is faster #.93
 
     def process(self, msg):
         correction = self.alignment * self.turn_gain  # angle = px * angle/pixel
+        #print(self.turn_gain)
         if self.use_uncertainty:
             correction = correction * (1 - self.uncertainty)
         out = Twist()
