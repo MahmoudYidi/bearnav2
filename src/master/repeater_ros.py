@@ -28,6 +28,8 @@ import io
 import matplotlib.ticker as ticker
 import asyncio
 from rclpy.qos import qos_profile_sensor_data
+from rclpy.qos import QoSProfile, ReliabilityPolicy
+
 
 class ActionServerNode(Node):
 
@@ -51,7 +53,8 @@ class ActionServerNode(Node):
         self.is_shutting_down = False
         self.clock = Clock()
         self.img_t = np.ones((250, 250, 3), dtype=np.uint8) * 255  # Initialize once
-
+        qos = QoSProfile(depth=10)
+        
         # services and action server set up
         self.get_logger().info("Waiting for services to become available...")
         self.distance_reset_srv = self.create_client(SetDist, 'set_dist')
@@ -86,13 +89,13 @@ class ActionServerNode(Node):
         self.cam_sub = self.create_subscription(Image, self.camera_topic, self.image_cb, qos_profile=qos_profile_sensor_data)
 
         # Publishers
-        self.al_1_pub = self.create_publisher(Image, 'alignment/inputCurrent', 1)
-        self.al_2_pub = self.create_publisher(Image, 'alignment/inputMap', 1)
-        self.al_pub = self.create_publisher(Alignment, 'correction_cmd', 1)
-        self.joy_pub = self.create_publisher(Twist, 'map_vel', 1)
+        self.al_1_pub = self.create_publisher(Image, 'alignment/inputCurrent', qos)
+        self.al_2_pub = self.create_publisher(Image, 'alignment/inputMap', qos)
+        self.al_pub = self.create_publisher(Alignment, 'correction_cmd', qos)
+        self.joy_pub = self.create_publisher(Twist, 'map_vel', qos)
 
         # Alignment module subscription
-        self.al_sub = self.create_subscription(Alignment, 'alignment/output', self.align_cb, 10) #1000
+        self.al_sub = self.create_subscription(Alignment, 'alignment/output', self.align_cb, qos) #1000
 
         # Start the action server
         self.get_logger().info("Starting repeater action server")

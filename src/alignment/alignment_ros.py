@@ -9,6 +9,7 @@ from rclpy.parameter import Parameter
 import alignment
 import numpy as np
 from rclpy.qos import qos_profile_sensor_data
+from rclpy.qos import QoSProfile
 
 class AlignmentNode(Node):
     def __init__(self):
@@ -19,12 +20,14 @@ class AlignmentNode(Node):
 
         self.aligner = alignment.Alignment()
         self.aligner.method = self.align_feature_type
+        qos = QoSProfile(depth=10)
+        
 
-        self.pub = self.create_publisher(Alignment, 'alignment/output', 1)
-        self.pub_hist = self.create_publisher(FloatList, 'histogram', 1)
+        self.pub = self.create_publisher(Alignment, 'alignment/output', qos)
+        self.pub_hist = self.create_publisher(FloatList, 'histogram', qos)
 
-        self.create_subscription(Image, 'alignment/inputMap', self.callbackA, 1)
-        self.create_subscription(Image, 'alignment/inputCurrent', self.callbackB, 1)
+        self.create_subscription(Image, 'alignment/inputMap', self.callbackA, qos)
+        self.create_subscription(Image, 'alignment/inputCurrent', self.callbackB, qos)
 
         self.get_logger().info("Aligner Ready...")
 

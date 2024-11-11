@@ -7,6 +7,7 @@ from nav_msgs.msg import Odometry
 from navigros2.srv import SetDist  
 from distance import Distance  
 from rclpy.qos import qos_profile_sensor_data
+from rclpy.qos import QoSProfile
 
 class DistanceNode(Node):
     def __init__(self):
@@ -16,7 +17,7 @@ class DistanceNode(Node):
         self.declare_parameter('use_twist', False)
         self.declare_parameter('cmd_vel_topic', '')
         self.declare_parameter('odom_topic', '')
-
+        qos = QoSProfile(depth=10)
         # Get parameter values
         use_twist = self.get_parameter('use_twist').get_parameter_value().bool_value
         cmd_vel_topic = self.get_parameter('cmd_vel_topic').get_parameter_value().string_value
@@ -25,7 +26,7 @@ class DistanceNode(Node):
         self.d = Distance(use_twist)
 
         # Create publisher
-        self.pub = self.create_publisher(Float64, 'distance', 1)
+        self.pub = self.create_publisher(Float64, 'distance', qos)
 
         # Create subscribers
         self.create_subscription(Odometry, odom_topic, self.callback_odom,qos_profile=qos_profile_sensor_data )
