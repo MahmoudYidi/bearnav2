@@ -87,6 +87,8 @@ class Alignment:
                 start = time.time()
                 curr_tensor = self.image_to_tensor(imgB)
                 map_tensor = self.image_to_tensor(imgA)
+                #print(curr_tensor.shape)
+                #print(map_tensor.shape)
                 hist = self.model(map_tensor, curr_tensor, padding=PAD)
                 hist_out = t.softmax(hist, dim=-1)
                 hist = hist.cpu().numpy()

@@ -312,12 +312,16 @@ class ActionServerNode(Node):
 
                 error = now - expected_message_time
                 sleep_time_nanoseconds = corrected_simulated_time_to_go - error
+                #print(sleep_time_nanoseconds)
 
                 # Convert nanoseconds to seconds and nanoseconds
-                seconds = int(sleep_time_nanoseconds // 1e9)  
-                nanoseconds = int(sleep_time_nanoseconds % 1e9)  
+                #seconds = int(sleep_time_nanoseconds // 1e9)  
+                #nanoseconds = int(sleep_time_nanoseconds % 1e9)  
+                duration = Duration(nanoseconds=int(sleep_time_nanoseconds))
                 
-                duration = Duration(seconds=seconds, nanoseconds=nanoseconds)
+                
+                #duration = Duration(seconds=seconds, nanoseconds=nanoseconds)
+                #print('duration',duration)
                 #await asyncio.sleep(sleep_time_nanoseconds / 1e9)
                 #clock.sleep_for(corrected_simulated_time_to_go)
                 self.clock.sleep_for(duration)
@@ -510,8 +514,10 @@ def main(args=None):
     async def main_loop():
         try:
             while rclpy.ok():
+                # Spin the executor with a short timeout to process callbacks frequently
                 executor.spin_once()
-                await asyncio.sleep(0.1)  # Adjust as needed
+                # Use a minimal sleep interval to yield control without blocking the loop
+                await asyncio.sleep(0.067) #0.07
         finally:
             executor.shutdown()
             node.destroy_node()
@@ -526,3 +532,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+

@@ -29,7 +29,7 @@ class ActionServerNode(Node):
         self.is_mapping = False
         self.img = None
         self.map_name = ""
-        self.map_step = 1.0
+        self.map_step = 0.1 #1.0
         self.next_step = 0
         self.bag_writer = None
         self.last_distance = None
