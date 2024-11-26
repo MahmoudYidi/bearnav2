@@ -7,9 +7,8 @@ ROS2 Version of the code base [a bearnav](https://github.com/LCAS/bearnav2)
 Clone the repository into a ROS workspace and build.
 
 ```bash
-git clone _________
-cd ___________
-colcon build
+git clone https://github.com/MahmoudYidi/navigros2.git
+colcon build --packages-select navigros2
 ```
 
 ## Usage
