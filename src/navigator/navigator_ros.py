@@ -3,8 +3,8 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
-from navigros2.msg import Alignment
-from navigros2.srv import SetClockGain
+from bearnav2.msg import Alignment
+from bearnav2.srv import SetClockGain
 from rclpy.qos import qos_profile_sensor_data 
 from rclpy.qos import QoSProfile
 
