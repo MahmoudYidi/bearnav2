@@ -12,9 +12,9 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64
 from nav_msgs.msg import Odometry
 from cv_bridge import CvBridge
-from navigros2.action import MapRepeater
-from navigros2.srv import SetDist, SetClockGain
-from navigros2.msg import Alignment
+from bearnav2.action import MapRepeater
+from bearnav2.srv import SetDist, SetClockGain
+from bearnav2.msg import Alignment
 import rosbag2_py
 import threading
 import numpy as np
