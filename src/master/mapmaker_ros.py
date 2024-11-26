@@ -11,8 +11,8 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Float64
 from cv_bridge import CvBridge
-from navigros2.action import MapMaker
-from navigros2.srv import SetDist
+from bearnav2.action import MapMaker
+from bearnav2.srv import SetDist
 from rosbag2_py import SequentialWriter, StorageOptions, ConverterOptions
 from rclpy.serialization import serialize_message
 from rosbag2_py import TopicMetadata
@@ -68,7 +68,7 @@ class ActionServerNode(Node):
         self.joy_sub = self.create_subscription(Twist, self.joy_topic, self.joy_cb, qos_profile=qos_profile_sensor_data)
         
         self.get_logger().info("Starting mapmaker action server")
-        self.action_server = ActionServer(self, MapMaker, '/navigros2/mapmaker', self.action_cb)
+        self.action_server = ActionServer(self, MapMaker, '/bearnav2/mapmaker', self.action_cb)
         self.get_logger().info("Server started, awaiting goal")
 
         self.position_topic = self.get_parameter('position_topic').get_parameter_value().string_value
