@@ -18,19 +18,19 @@ def generate_launch_description():
         ########   NO NEED TO CHANGE ANYTHING BELOW IF NOT TWEAKING PARAMETERS OF ALGORITHM   ###########
         # Alignment node
         Node(
-            package='navigros2',
+            package='bearnav2',
             executable='alignment_ros.py',
             name='alignment',
             output='screen',
             parameters=[{
                 'feature_type': LaunchConfiguration('alignment_method'),
             }],
-            namespace='navigros2'
+            namespace='bearnav2'
         ),
 
         # Distance node
         Node(
-            package='navigros2',
+            package='bearnav2',
             executable='distance_ros.py',
             name='distance',
             respawn=True,
@@ -40,12 +40,12 @@ def generate_launch_description():
                 'cmd_vel_topic': LaunchConfiguration('cmd_vel_sub'),
                 'odom_topic': LaunchConfiguration('odom_topic')
             }],
-            namespace='navigros2'
+            namespace='bearnav2'
         ),
 
         # Mapmaker node
         Node(
-            package='navigros2',
+            package='bearnav2',
             executable='mapmaker_ros.py',
             name='mapmaker',
             respawn=True,
@@ -57,12 +57,12 @@ def generate_launch_description():
                 'position_topic': LaunchConfiguration('odom_topic')
             }],
             output='screen',
-            namespace='navigros2'
+            namespace='bearnav2'
         ),
 
         # Repeater node
         Node(
-            package='navigros2',
+            package='bearnav2',
             executable='repeater_ros.py',
             name='repeater',
             respawn=True,
@@ -72,12 +72,12 @@ def generate_launch_description():
                 'position_topic': LaunchConfiguration('odom_topic')
             }],
             output='screen',
-            namespace='navigros2'
+            namespace='bearnav2'
         ),
 
         # Navigator node
         Node(
-            package='navigros2',
+            package='bearnav2',
             executable='navigator_ros.py',
             name='navigator',
             parameters=[
@@ -87,18 +87,18 @@ def generate_launch_description():
                 {'cmd_vel_topic': LaunchConfiguration('cmd_vel_sub')}
             ],
             output='screen',
-            namespace='navigros2'
+            namespace='bearnav2'
         ),
 
         # Preprocessor node
         Node(
-            package='navigros2',  
+            package='bearnav2',  
             executable='preprocess_ros.py',    
             name='preprocessor',
             output='screen',
             parameters=[{
                 'hist_equal': False 
             }],
-            namespace='navigros2'
+            namespace='bearnav2'
         ),
     ])
