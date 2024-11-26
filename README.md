@@ -31,15 +31,21 @@ Simply type in the name of the map and use as follows:\
 :arrow_forward: Click Stop Mapping when done to save session.\
 :arrow_forward: Relaunch your node and GUI, type in the saved map and click repeat to repeat the map.
 
+If you want to have GUI-related output topics for visualisation (runs slower), then also launch:
+```bash
+ros2 launch navigros2 navigros2-gui-launch.py
+```
+
 ## Classic Usage
 The usage is slightly different with the ROS 1 version. 
 
-If you want to run the system with gui, then:
+As mentioned Initially, you can run the package with and without GUI-related output topics.
+For a simple launch without GUI-topics for visualisation:
 
 ```bash
 ros2 launch navigros2 navigros2_launch.py
 ```
-This simply just launch the ***navigros2_launch*** . Faster as no additional computations are done. However if you require the gui, may run slower, but provides more feedback using gui interface, You need to also launch the GUI using:
+This simply just launch the ***navigros2_launch*** . Faster as no additional computations are done. However if you require the gui, may run slower, but provides visualisation. You need to also launch the GUI using:
 
 ```bash
 ros2 launch navigros2 navigros2-gui-launch.py
@@ -65,5 +71,5 @@ To repeat your map, simply run:
 ```bash
 ./map_control.sh repeat_map name
 ```
-
-Don't forget to map your topics in the launch file to your desired robot topics.
+\
+:bangbang: Don't forget to map your topics in the launch files to your desired robot topics.
