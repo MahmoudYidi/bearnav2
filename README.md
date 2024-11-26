@@ -10,6 +10,13 @@ Clone the repository into a ROS workspace and build.
 git clone https://github.com/MahmoudYidi/navigros2.git
 colcon build --packages-select navigros2
 ```
+```bash
+cd src/navigros2/
+cp map_control.sh ../../
+cp map_gui.py ../../
+cd ../../
+```
+
 
 ## Simple GUI Usage
 The new update allows you to simply control your mapping and repeating from a GUI based control dashboard
@@ -29,14 +36,6 @@ ros2 launch navigros2 navigros2-gui-launch.py
 ```
 
 ### Mapping
-
-A bash file has been created to simplify the mapping process. Before that simply copy the .sh file to your workspace (do this once).
-```bash
-cd src/navigros2/
-cp map_control.sh ../../
-cd ../../
-```
-
 To start mapping simply run:
 ```bash
 ./map_control.sh start_map name
