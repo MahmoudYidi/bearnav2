@@ -5,7 +5,7 @@ from rclpy.node import Node
 import cv2
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-from navigros2.msg import FeatureLocations
+from bearnav2.msg import FeatureLocations
 
 class FeatureViz(Node):
     def __init__(self):
