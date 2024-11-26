@@ -1,17 +1,17 @@
-# Navigros2 (Bearnav-ROS2)
+# Bearnav2 (Bearnav-ROS2)
 
 ## Overview
 
-**Navigros2** is the ROS2 version of the [Bearnav project](https://github.com/LCAS/bearnav2). It provides a framework for robotics teach and repeat. The ROS2 version includes a more friendly GUI and easy UI for mapping/recording. 
+**Bearnav2** is the ROS2 version of the [Bearnav project](https://github.com/LCAS/bearnav2). It provides a framework for robotics teach and repeat. The ROS2 version includes a more friendly GUI and easy UI for mapping/recording. 
 
 ## Installation
 
-To set up **Navigros2** in your ROS workspace, follow these steps:
+To set up **bearnav2** in your ROS workspace, follow these steps:
 
 1. Clone the repository into your workspace:
     ```bash
-    git clone https://github.com/MahmoudYidi/navigros2.git
-    cd navigros2
+    git clone https://github.com/MahmoudYidi/bearnav2.git
+    cd bearnav2
     ```
 
 2. Install required Python dependencies:
@@ -22,18 +22,18 @@ To set up **Navigros2** in your ROS workspace, follow these steps:
 3. Build the package:
     ```bash
     cd ..
-    colcon build --packages-select navigros2
+    colcon build --packages-select bearnav2
     ```
 
 ## Usage
 
 ### Simple GUI Usage
 
-The new version of **Navigros2** comes with a simple GUI for controlling mapping and repeating actions. To use the GUI:
+The new version of **bearnav2** comes with a simple GUI for controlling mapping and repeating actions. To use the GUI:
 
 1. Launch the ROS2 nodes:
     ```bash
-    ros2 launch navigros2 navigros2_launch.py
+    ros2 launch bearnav2 bearnav2_launch.py
     ```
 
 2. Navigate to the package directory and run the GUI script:
@@ -52,23 +52,23 @@ The new version of **Navigros2** comes with a simple GUI for controlling mapping
 
 For visualization of GUI-related topics (this may impact performance), launch the following:
 ```bash
-ros2 launch navigros2 navigros2-gui-launch.py
+ros2 launch bearnav2 bearnav2-gui-launch.py
 ```
 
 ### Classic Usage
 
-If you prefer not to use the GUI, **Navigros2** can be run in a more lightweight mode:
+If you prefer not to use the GUI, **bearnav2** can be run in a more lightweight mode:
 
 1. Launch the basic node for mapping (without GUI):
     ```bash
-    ros2 launch navigros2 navigros2_launch.py
+    ros2 launch bearnav2 bearnav2_launch.py
     ```
 
-    This will run the **navigros2_launch** file and perform mapping without any additional visualization topics.
+    This will run the **bearnav2_launch** file and perform mapping without any additional visualization topics.
 
 2. If GUI-related topics are needed for visualization, run:
     ```bash
-    ros2 launch navigros2 navigros2-gui-launch.py
+    ros2 launch bearnav2 bearnav2-gui-launch.py
     ```
 
 ### Mapping Control via Script
