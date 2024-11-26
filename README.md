@@ -11,7 +11,10 @@ git clone https://github.com/MahmoudYidi/navigros2.git
 colcon build --packages-select navigros2
 ```
 
-## Usage
+## Simple GUI Usage
+The new update allows you to simply control your mapping and repeating from a GUI based control dashboard
+
+## Classic Usage
 The usage is slightly different with the ROS 1 version. 
 
 If you want to run the system with gui, then:
