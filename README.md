@@ -55,6 +55,7 @@ ros2 launch navigros2 navigros2-gui-launch.py
 
 
 ### Mapping
+map_control.sh file has been created to directly trigger the mapping and reapeting actions:
 To start mapping simply navigate to the package directory and  run:
 ```bash
 ./map_control.sh start_map name
