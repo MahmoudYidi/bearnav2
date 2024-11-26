@@ -55,41 +55,48 @@ For visualization of GUI-related topics (this may impact performance), launch th
 ros2 launch navigros2 navigros2-gui-launch.py
 ```
 
-## Classic Usage
-The usage is slightly different with the ROS 1 version. 
+### Classic Usage
 
-As mentioned Initially, you can run the package with and without GUI-related output topics.
-For a simple launch without GUI-topics for visualisation:
+If you prefer not to use the GUI, **Navigros2** can be run in a more lightweight mode:
 
-```bash
-ros2 launch navigros2 navigros2_launch.py
-```
-This simply just launch the ***navigros2_launch*** . Faster as no additional computations are done. However if you require the gui, may run slower, but provides visualisation. You need to also launch the GUI using:
+1. Launch the basic node for mapping (without GUI):
+    ```bash
+    ros2 launch navigros2 navigros2_launch.py
+    ```
 
-```bash
-ros2 launch navigros2 navigros2-gui-launch.py
-```
+    This will run the **navigros2_launch** file and perform mapping without any additional visualization topics.
 
+2. If GUI-related topics are needed for visualization, run:
+    ```bash
+    ros2 launch navigros2 navigros2-gui-launch.py
+    ```
 
+### Mapping Control via Script
 
+A script (`map_control.sh`) is provided for simpler control over the mapping and repeating actions. Use the following commands:
 
-### Mapping
-map_control.sh file has been created to directly trigger the mapping and reapeting actions:
-To start mapping simply navigate to the package directory and  run:
-```bash
-./map_control.sh start_map name
-```
-Where '*name*' is the the name of the map. After succesfully running this, you can simply drive the robot around to your desired goal. if you are done, run:
+- **Start mapping**:
+    ```bash
+    ./map_control.sh start_map <name>
+    ```
 
-```bash
-./map_control.sh stop_map name
-```
+    Replace `<name>` with your desired map name. After running this command, drive the robot to your desired locations.
 
-to save the map and end the mapping session. 
+- **Stop mapping**:
+    ```bash
+    ./map_control.sh stop_map <name>
+    ```
 
-To repeat your map, simply run:
-```bash
-./map_control.sh repeat_map name
-```
-\
-:bangbang: Don't forget to map your topics in the launch files according to your robot topics.
+    This will save the map and stop the mapping process.
+
+- **Repeat a saved map**:
+    ```bash
+    ./map_control.sh repeat_map <name>
+    ```
+
+    Replace `<name>` with the saved map name. This will replay the previously recorded map.
+
+### Important Notes
+
+- Ensure you have mapped your topics correctly in the launch files for your robot’s configuration (e.g., `/cmd_vel`, `/odom`, `/camera/image_raw`).
+
