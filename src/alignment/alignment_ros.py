@@ -4,7 +4,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-from navigros2.msg import Alignment, FloatList
+from bearnav2.msg import Alignment, FloatList
 from rclpy.parameter import Parameter
 import alignment
 import numpy as np
