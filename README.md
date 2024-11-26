@@ -1,7 +1,7 @@
 # Navigros2 (Bearnav-ROS2)
 ## Overview
 
-ROS2 Version of the code base [a link](https://github.com/LCAS/bearnav2)
+ROS2 Version of the code base [a bearnav](https://github.com/LCAS/bearnav2)
 ## Installation
 
 Clone the repository into a ROS workspace and build.
