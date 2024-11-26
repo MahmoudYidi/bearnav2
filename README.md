@@ -43,6 +43,9 @@ This simply just launch the ***navigros2_launch*** . Faster as no additional com
 ros2 launch navigros2 navigros2-gui-launch.py
 ```
 
+![image](https://github.com/user-attachments/assets/b5106119-949f-49ec-9465-f7faaff218d6)
+
+
 ### Mapping
 To start mapping simply run:
 ```bash
