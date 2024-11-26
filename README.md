@@ -30,7 +30,8 @@ python3 map_gui.py
 ```
 You should get the display below
 ![image](https://github.com/user-attachments/assets/b5106119-949f-49ec-9465-f7faaff218d6)
-
+\
+\
 Simply type in the name of the map and use as follows:
 :arrow_forward: Click Start Mapping and drive/teach your robot
 :arrow_forward: Click Stop Mapping when done to save session.
