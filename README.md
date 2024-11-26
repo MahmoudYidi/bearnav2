@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Navigros2** is the ROS2 version of the [Bearnav project](https://github.com/LCAS/bearnav2). It provides a framework for autonomous robot mapping and navigation. This project includes functionalities for recording, saving, and repeating robot maps, alongside optional graphical interfaces for control.
+**Navigros2** is the ROS2 version of the [Bearnav project](https://github.com/LCAS/bearnav2). It provides a framework for robotics teach and repeat. The ROS2 version includes a more friendly GUI and easy UI for mapping/recording. 
 
 ## Installation
 
