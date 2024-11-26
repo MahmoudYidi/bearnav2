@@ -10,6 +10,7 @@ Clone the repository into a ROS workspace and build.
 git clone https://github.com/MahmoudYidi/navigros2.git
 colcon build --packages-select navigros2
 ```
+Copy files to your main directory for easy access to them (Optional but recommended)
 ```bash
 cd src/navigros2/
 cp map_control.sh ../../
