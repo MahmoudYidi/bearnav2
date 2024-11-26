@@ -72,4 +72,4 @@ To repeat your map, simply run:
 ./map_control.sh repeat_map name
 ```
 \
-:bangbang: Don't forget to map your topics in the launch files to your desired robot topics.
+:bangbang: Don't forget to map your topics in the launch files according to your robot topics.
