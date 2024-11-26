@@ -7,7 +7,7 @@ def start_mapping():
     if not map_name:
         messagebox.showerror("Input Error", "Please enter a map name.")
         return
-    action_command = f"ros2 action send_goal /navigros2/mapmaker navigros2/action/MapMaker '{{map_name: \"{map_name}\", start: true}}'"
+    action_command = f"ros2 action send_goal /bearnav2/mapmaker bearnav2/action/MapMaker '{{map_name: \"{map_name}\", start: true}}'"
     os.system(action_command)
     messagebox.showinfo("Command Sent", f"Started mapping with map name '{map_name}'.")
 
@@ -16,7 +16,7 @@ def stop_mapping():
     if not map_name:
         messagebox.showerror("Input Error", "Please enter a map name.")
         return
-    action_command = f"ros2 action send_goal /navigros2/mapmaker navigros2/action/MapMaker '{{map_name: \"{map_name}\", start: false}}'"
+    action_command = f"ros2 action send_goal /bearnav2/mapmaker bearnav2/action/MapMaker '{{map_name: \"{map_name}\", start: false}}'"
     os.system(action_command)
     messagebox.showinfo("Command Sent", f"Stopped mapping with map name '{map_name}'.")
 
@@ -25,7 +25,7 @@ def repeat_mapping():
     if not map_name:
         messagebox.showerror("Input Error", "Please enter a map name.")
         return
-    action_command = f"ros2 action send_goal /navigros2/repeater navigros2/action/MapRepeater '{{map_name: \"{map_name}\"}}'"
+    action_command = f"ros2 action send_goal /bearnav2/repeater bearnav2/action/MapRepeater '{{map_name: \"{map_name}\"}}'"
     os.system(action_command)
     messagebox.showinfo("Command Sent", f"Repeated mapping with map name '{map_name}'.")
 
