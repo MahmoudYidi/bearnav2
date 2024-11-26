@@ -1,40 +1,56 @@
 # Navigros2 (Bearnav-ROS2)
+
 ## Overview
 
-ROS2 Version of the code base [a bearnav](https://github.com/LCAS/bearnav2)
+**Navigros2** is the ROS2 version of the [Bearnav project](https://github.com/LCAS/bearnav2). It provides a framework for autonomous robot mapping and navigation. This project includes functionalities for recording, saving, and repeating robot maps, alongside optional graphical interfaces for control.
+
 ## Installation
 
-Clone the repository into a ROS workspace, istall the requirements and build
+To set up **Navigros2** in your ROS workspace, follow these steps:
 
-```bash
-git clone https://github.com/MahmoudYidi/navigros2.git
-cd navigros2
-pip install -r requirements.txt
-cd ..
-colcon build --packages-select navigros2
-```
+1. Clone the repository into your workspace:
+    ```bash
+    git clone https://github.com/MahmoudYidi/navigros2.git
+    cd navigros2
+    ```
 
-## Simple GUI Usage
-The new update allows you to simply control your mapping and repeating from a GUI based control dashboard.
-Simply launch the node:
-```bash
-ros2 launch navigros2 navigros2_launch.py
-```
-Navigate to the package directory and then run the GUI script:
-```bash
-python3 map_gui.py
-```
-You should get the display below
-\
-![image](https://github.com/user-attachments/assets/b5106119-949f-49ec-9465-f7faaff218d6)
-\
-\
-Simply type in the name of the map and use as follows:\
-:arrow_forward: Click Start Mapping and drive/teach your robot\
-:arrow_forward: Click Stop Mapping when done to save session.\
-:arrow_forward: Relaunch your node and GUI, type in the saved map and click repeat to repeat the map.
+2. Install required Python dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-If you want to have GUI-related output topics for visualisation (runs slower), then also launch:
+3. Build the package:
+    ```bash
+    cd ..
+    colcon build --packages-select navigros2
+    ```
+
+## Usage
+
+### Simple GUI Usage
+
+The new version of **Navigros2** comes with a simple GUI for controlling mapping and repeating actions. To use the GUI:
+
+1. Launch the ROS2 nodes:
+    ```bash
+    ros2 launch navigros2 navigros2_launch.py
+    ```
+
+2. Navigate to the package directory and run the GUI script:
+    ```bash
+    python3 map_gui.py
+    ```
+
+    This will open the GUI interface.
+
+    ![image](https://github.com/user-attachments/assets/b5106119-949f-49ec-9465-f7faaff218d6)
+
+3. In the GUI, enter the name of the map and use the following controls:
+    - **Start Mapping**: Click to begin the mapping process and move the robot.
+    - **Stop Mapping**: Click to save the map once you’re done.
+    - **Repeat Map**: Relaunch the node and GUI, enter the saved map name, and click **Repeat** to replay the map.
+
+For visualization of GUI-related topics (this may impact performance), launch the following:
 ```bash
 ros2 launch navigros2 navigros2-gui-launch.py
 ```
