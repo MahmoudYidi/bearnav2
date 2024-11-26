@@ -28,6 +28,13 @@ and then run the GUI script:
 ```bash
 python3 map_gui.py
 ```
+You should get the display below
+![image](https://github.com/user-attachments/assets/b5106119-949f-49ec-9465-f7faaff218d6)
+
+Simply type in the name of the map,
+Click Start Mapping and drive/teach your robot
+Click Stop Mapping when done to save session.
+Relaunch your node and GUI, type in the saved map and click repeat to repeat the map.
 
 ## Classic Usage
 The usage is slightly different with the ROS 1 version. 
@@ -43,7 +50,7 @@ This simply just launch the ***navigros2_launch*** . Faster as no additional com
 ros2 launch navigros2 navigros2-gui-launch.py
 ```
 
-![image](https://github.com/user-attachments/assets/b5106119-949f-49ec-9465-f7faaff218d6)
+
 
 
 ### Mapping
