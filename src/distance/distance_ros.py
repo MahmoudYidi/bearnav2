@@ -4,7 +4,7 @@ from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64
 from nav_msgs.msg import Odometry
-from navigros2.srv import SetDist  
+from bearnav2.srv import SetDist  
 from distance import Distance  
 from rclpy.qos import qos_profile_sensor_data
 from rclpy.qos import QoSProfile
