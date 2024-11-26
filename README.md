@@ -13,8 +13,7 @@ colcon build --packages-select navigros2
 Copy files to your main directory for easy access to them (Optional but recommended)
 ```bash
 cd src/navigros2/
-cp map_control.sh ../../
-cp map_gui.py ../../
+cp {map_control.sh, map_gui.py}  ../../
 cd ../../
 ```
 
