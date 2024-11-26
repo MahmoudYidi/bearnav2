@@ -19,7 +19,15 @@ cd ../../
 
 
 ## Simple GUI Usage
-The new update allows you to simply control your mapping and repeating from a GUI based control dashboard
+The new update allows you to simply control your mapping and repeating from a GUI based control dashboard.
+Simply launch the node:
+```bash
+ros2 launch navigros2 navigros2_launch.py
+```
+and then run the GUI script:
+```bash
+python3 map_gui.py
+```
 
 ## Classic Usage
 The usage is slightly different with the ROS 1 version. 
