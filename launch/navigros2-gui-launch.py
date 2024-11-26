@@ -15,7 +15,7 @@ def generate_launch_description():
 
         # Live Viz node
         Node(
-            package='navigros2',
+            package='bearnav2',
             executable='live_viz.py',
             name='live_viz',
             output='screen',
@@ -24,28 +24,28 @@ def generate_launch_description():
                 'camera_topic': LaunchConfiguration('camera_topic'),
                 'feature_type': LaunchConfiguration('feature_type')  
             }],
-            namespace='navigros2'
+            namespace='bearnav2'
         ),
 
         # Nodes
         Node(
-            package='navigros2',
+            package='bearnav2',
             executable='histogram_viz.py',
             name='histogram_viz',
             output='screen',
             respawn=True,
             parameters=[{}],
-            namespace='navigros2'
+            namespace='bearnav2'
         ),
 
         Node(
-            package='navigros2',
+            package='bearnav2',
             executable='matches_viz.py',
             name='matches_viz',
             output='screen',
             respawn=True,
             parameters=[{}],
-            namespace='navigros2'
+            namespace='bearnav2'
         )
 
 
