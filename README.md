@@ -4,10 +4,13 @@
 ROS2 Version of the code base [a bearnav](https://github.com/LCAS/bearnav2)
 ## Installation
 
-Clone the repository into a ROS workspace and build.
+Clone the repository into a ROS workspace, istall the requirements and build
 
 ```bash
 git clone https://github.com/MahmoudYidi/navigros2.git
+cd navigros2
+pip install -r requirements.txt
+cd ..
 colcon build --packages-select navigros2
 ```
 
