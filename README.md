@@ -57,14 +57,14 @@ ros2 launch bearnav2 bearnav2-gui-launch.py
 
 ### Classic Usage
 
-If you prefer not to use the GUI, **bearnav2** can be run in a more lightweight mode:
+If you prefer not to use the GUI control, **bearnav2** can be controlled using a bash script:
 
-1. Launch the basic node for mapping (without GUI):
+1. Firstly, launch the basic node for mapping (without GUI):
     ```bash
     ros2 launch bearnav2 bearnav2_launch.py
     ```
 
-    This will run the **bearnav2_launch** file and perform mapping without any additional visualization topics.
+    This will run the **bearnav2_launch** file.
 
 2. If GUI-related topics are needed for visualization, run:
     ```bash
