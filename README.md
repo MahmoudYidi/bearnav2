@@ -19,9 +19,8 @@ To set up **bearnav2** in your ROS workspace, follow these steps:
     pip install -r requirements.txt
     ```
 
-3. Build the package:
+3. Navigate to your workspace and build the package:
     ```bash
-    cd ..
     colcon build --packages-select bearnav2
     ```
 
@@ -31,7 +30,7 @@ To set up **bearnav2** in your ROS workspace, follow these steps:
 
 The new version of **bearnav2** comes with a simple GUI for controlling mapping and repeating actions. To use the GUI:
 
-1. Launch the ROS2 nodes:
+1. Source the setup.bash and Launch the ROS2 nodes:
     ```bash
     ros2 launch bearnav2 bearnav2_launch.py
     ```
