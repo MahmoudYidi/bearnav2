@@ -3,7 +3,7 @@
 class Distance:
     def __init__(self, use_twist=False):
         self.driven_dist = 0.0
-        self.use_twist = use_twist  # Now it's a direct class parameter
+        self.use_twist = use_twist  
         self.last_odom = None
         self.last_time = None
         print(f"use_twist: {self.use_twist}")

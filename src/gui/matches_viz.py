@@ -33,11 +33,11 @@ class FeatureViz(Node):
         self.img_b_ts = None
 
         # Timeout for images
-        self.img_timeout = 0.5  # seconds
+        self.img_timeout = 0.5 
 
         # Draw parameters
-        self.match_col = (0, 255, 0)  # Green
-        self.nomatch_col = (255, 0, 0)  # Red
+        self.match_col = (0, 255, 0)  
+        self.nomatch_col = (255, 0, 0)  
         self.box_size = 10
 
     def is_publishing(self):

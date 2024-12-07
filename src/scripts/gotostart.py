@@ -1,3 +1,5 @@
+
+# Beta Script. Not needed for now.
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist, PoseStamped
@@ -111,7 +113,7 @@ def main(args=None):
     # Spin the node to keep it running
     while rclpy.ok():
         rclpy.spin_once(node)
-        node.adjust_position()  # Continuously adjust the robot's position
+        node.adjust_position() 
 
     node.destroy_node()
     rclpy.shutdown()

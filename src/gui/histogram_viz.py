@@ -7,7 +7,7 @@ from rclpy.node import Node
 import cv2
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-from navigros2.msg import FloatList
+from bearnav2.msg import FloatList
 import matplotlib.pyplot as plt
 import numpy as np
 

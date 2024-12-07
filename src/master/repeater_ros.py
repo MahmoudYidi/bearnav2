@@ -52,7 +52,7 @@ class ActionServerNode(Node):
         self.lock = threading.Lock()
         self.is_shutting_down = False
         self.clock = Clock()
-        self.img_t = np.ones((250, 250, 3), dtype=np.uint8) * 255  # Initialize once
+        self.img_t = np.ones((250, 250, 3), dtype=np.uint8) * 255  
         qos = QoSProfile(depth=10)
         
         # services and action server set up
@@ -67,7 +67,7 @@ class ActionServerNode(Node):
         #self.odom_sub = self.create_subscription(Odometry, '/odom_topic', self.odom_cb, 10)
 
         self.position_topic = self.get_parameter('position_topic').get_parameter_value().string_value
-        self.odom_sub = self.create_subscription(Odometry, self.position_topic, self.odom_cb, qos_profile=qos_profile_sensor_data)  # Subscribe to the position topic
+        self.odom_sub = self.create_subscription(Odometry, self.position_topic, self.odom_cb, qos_profile=qos_profile_sensor_data)  
         #self.timer = self.create_timer(0.1, self.odom_sub)
 
         # Publisher for the combined image
@@ -95,7 +95,7 @@ class ActionServerNode(Node):
         self.joy_pub = self.create_publisher(Twist, 'map_vel', qos)
 
         # Alignment module subscription
-        self.al_sub = self.create_subscription(Alignment, 'alignment/output', self.align_cb, qos) #1000
+        self.al_sub = self.create_subscription(Alignment, 'alignment/output', self.align_cb, qos) 
 
         # Start the action server
         self.get_logger().info("Starting repeater action server")
@@ -117,8 +117,8 @@ class ActionServerNode(Node):
     def image_cb(self, msg):
         if self.is_repeating:
             #with self.lock:
-            self.img = msg  # Update to the latest image
-            self.al_1_pub.publish(msg)  # Always publish the latest image
+            self.img = msg  
+            self.al_1_pub.publish(msg)  
             #self.get_logger().info("Received and published a new image")
     
 
@@ -379,7 +379,7 @@ class ActionServerNode(Node):
             yield topic, msg, timestamp
 
     def get_message_type(self, topic_type):
-        # Map topic types to their corresponding ROS message types
+        # Map topic types to their corresponding ROS message types (Trial)
         if topic_type == 'sensor_msgs/msg/Image':
             return Image
         elif topic_type == 'geometry_msgs/msg/Twist':
@@ -514,9 +514,7 @@ def main(args=None):
     async def main_loop():
         try:
             while rclpy.ok():
-                # Spin the executor with a short timeout to process callbacks frequently
                 executor.spin_once()
-                # Use a minimal sleep interval to yield control without blocking the loop
                 await asyncio.sleep(0.067) #0.07
         finally:
             executor.shutdown()

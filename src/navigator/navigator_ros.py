@@ -53,7 +53,7 @@ class NavigatorNode(Node):
         try:
             req = SetClockGain.Request() 
             req.gain = 1.0 / velocity_gain  
-            future = self.gain_srv.call_async(req)  # Use async call
+            future = self.gain_srv.call_async(req)  
             rclpy.spin_until_future_complete(self, future)
             if future.result() is not None:
                 self.get_logger().info(f"Clock gain set to: {req.gain}")

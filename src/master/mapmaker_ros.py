@@ -72,7 +72,7 @@ class ActionServerNode(Node):
         self.get_logger().info("Server started, awaiting goal")
 
         self.position_topic = self.get_parameter('position_topic').get_parameter_value().string_value
-        self.position_sub = self.create_subscription(Odometry, self.position_topic, self.position_cb, qos_profile=qos_profile_sensor_data)  # Subscribe to the position topic
+        self.position_sub = self.create_subscription(Odometry, self.position_topic, self.position_cb, qos_profile=qos_profile_sensor_data) 
 
 
     #def get_message_type(self, topic):
@@ -244,7 +244,7 @@ class ActionServerNode(Node):
     def shutdown(self):
         self.is_mapping = False
         if self.bag_writer:
-            self.bag_writer = None  # Discard the writer instance
+            self.bag_writer = None  
          
         #self.get_logger().info('Node shutting down...')
 

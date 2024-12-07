@@ -64,7 +64,7 @@ class LiveFeatures(Node):
             self.get_logger().info(f"Feature Detector set to: {self.feature_names[index]}")
         else:
             self.get_logger().warn(f"Feature index '{index}' is not valid. Defaulting to ORB.")
-            self.feature_detector = self.feature_types[-1]  # Default to ORB
+            self.feature_detector = self.feature_types[-1]  # ORB
 
     def update_parameters(self):
         new_feature_type_index = self.get_parameter('feature_type').get_parameter_value().integer_value
