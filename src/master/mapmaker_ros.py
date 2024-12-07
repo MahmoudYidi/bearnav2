@@ -244,8 +244,7 @@ class ActionServerNode(Node):
     def shutdown(self):
         self.is_mapping = False
         if self.bag_writer:
-            self.bag_writer = None  
-         
+            self.bag_writer = None        
         #self.get_logger().info('Node shutting down...')
 
 
